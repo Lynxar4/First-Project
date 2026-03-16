@@ -1,0 +1,60 @@
+#include <iostream>
+#include "Random.h"
+
+int getUserInput(int guessCounter)
+{
+	std::cout << "Guess #" << guessCounter << ": ";
+	int guess{};
+	std::cin >> guess;
+	return guess;
+}
+
+int main()
+{
+	std::cout << "Let's play a game. I'm thinking of a number between 1 and 100. You have 7 tries to guess what it is. \n";
+	int randomNumber{ Random::get(1, 100) };
+	int guessCounter{ 1 };
+	int guess{};
+	while (guess != randomNumber)
+	{
+		guess = getUserInput(guessCounter);
+		if (guessCounter == 7)
+		{
+			std::cout << "You lost, the correct number was " << randomNumber << "\n\n";
+			std::cout << "Would you like to play again? (y/n)";
+			char c{};
+			std::cin >> c;
+			while (true)
+			{
+				if (c == 'y')
+				{
+					guessCounter = 1;
+					randomNumber = Random::get(1, 100);
+					break;
+				}
+				else if (c == 'n')
+				{
+					return 0;
+				}
+				else {
+					std::cout << "Would you like to play again? (y/n)\n";
+					std::cin >> c;
+				}
+			}
+			continue;
+		}
+		if (guess > randomNumber)
+		{
+			std::cout << "Your guess is too high \n\n";
+			++guessCounter;
+		}
+		else if (guess < randomNumber)
+		{
+			std::cout << "Your guess is too low \n\n";
+			++guessCounter;
+		}
+	}
+	std::cout << "Correct! You Win!";
+	return 0;
+
+}
