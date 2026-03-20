@@ -1,12 +1,38 @@
 #include <iostream>
 #include "Random.h"
+#include <limits>
+
+void ignoreLine()
+{
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
 int getUserInput(int guessCounter)
 {
-	std::cout << "Guess #" << guessCounter << ": ";
-	int guess{};
-	std::cin >> guess;
-	return guess;
+	while (true)
+	{
+		std::cout << "Guess #" << guessCounter << ": ";
+		int guess{};
+		std::cin >> guess;
+		bool success{ std::cin };
+		bool inBound{ true };
+		std::cin.clear();
+		ignoreLine();
+		if (guess < 0)
+		{
+			std::cout << "You can't enter a negative number\n";
+			inBound = false;
+		} 
+		else if (guess > 100)
+		{
+			std::cout << "Your number is more then 100\n";
+			inBound = false;
+		}
+		if (success && inBound)
+		{
+			return guess;
+		}
+	}
 }
 
 int main()
@@ -22,6 +48,7 @@ int main()
 		{
 			std::cout << "You lost, the correct number was " << randomNumber << "\n\n";
 			std::cout << "Would you like to play again? (y/n)";
+			ignoreLine();
 			char c{};
 			std::cin >> c;
 			while (true)
@@ -38,6 +65,7 @@ int main()
 				}
 				else {
 					std::cout << "Would you like to play again? (y/n)\n";
+					ignoreLine();
 					std::cin >> c;
 				}
 			}
